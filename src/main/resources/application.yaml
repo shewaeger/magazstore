@@ -1,0 +1,9 @@
+server:
+  port: 8080
+  contextPath: /
+spring:
+  application:
+    name: magazstore
+  jpa:
+    hibernate:
+      ddl-auto: validate

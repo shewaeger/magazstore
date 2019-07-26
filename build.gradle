@@ -71,8 +71,12 @@ task bootRunDev(type: bootRun.class) {
     dependsOn = ['build']
 
     doFirst() {
-        main = "${rootProject.group}.${rootProject.name}.ApplicationStart"
+        main = "com.github.shewaeger.magazstore.MagazstoreApplication"
         classpath = sourceSets.main.runtimeClasspath
         systemProperty 'spring.profiles.active', 'dev'
     }
 }
+
+apply from: 'liquibase.gradle'
+
+liquibase magazstoreDB
