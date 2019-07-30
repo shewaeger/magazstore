@@ -30,6 +30,9 @@ databaseChangeLog() {
             column(name: 'date_update', type: 'datetime') {
                 constraints(nullable: false)
             }
+            column(name: 'email', type: 'varchar') {
+                constraints(nullable: false, unique: true, uniqueConstraintName: 'unique_user_email')
+            }
         }
 
         createTable(tableName: 'users_actions') {
@@ -42,8 +45,43 @@ databaseChangeLog() {
         }
 
         rollback {
+            delete(tableName: 'users_actions')
             dropTable(tableName: 'users_actions')
             dropTable(tableName: 'users')
+        }
+    }
+
+    changeSet(id: 'create_table_attachments', author: 'shewaeger') {
+        createTable(tableName: 'attachments') {
+            column(name: 'id', type: 'bigint', autoIncrement: true) {
+                constraints(primaryKey: true, nullable: false)
+            }
+
+            column(name: 'mime_type', type: 'varchar')
+
+            column(name: 'hash', type: 'varchar') {
+                constraints(nullable: false, unique: true, uniqueConstraintName: 'unique_attachments_hash')
+            }
+
+            column(name: 'id_owner', type: 'bigint') {
+                constraints(nullable: false, references: 'users(id)', foreignKeyName: 'fk_attachments_owner')
+            }
+        }
+
+        rollback {
+            delete(tableName: 'attachments')
+            dropTable(tableName: 'attachments')
+        }
+    }
+
+    changeSet(id: 'add_avatar_to_users_table', author: 'shewaeger') {
+        addColumn(tableName: 'users') {
+            column(name: 'id_avatar', type: 'bigint') {
+                constraints(references: 'attachments(id)', foreignKeyName: 'fk_users_attachments')
+            }
+        }
+        rollback {
+            dropColumn(tableName: 'users', columnName: 'id_attachment')
         }
     }
 
@@ -78,7 +116,17 @@ databaseChangeLog() {
                 constraints(references: 'categories(id)', foreignKeyName: 'fk_categories_tree')
             }
         }
+
+        createTable(tableName: 'products_attachments') {
+            column(name: 'id_product', type: 'bigint') {
+                constraints(references: 'products(id)', foreignKeyName: "fk_product_attachment")
+            }
+            column(name: 'id_attachment', type: 'bigint') {
+                constraints(references: 'attachments(id)', foreignKeyName: 'fk_attachments_products')
+            }
+        }
         rollback {
+            dropTable tableName: 'products_attachments'
             dropTable tableName: 'products'
         }
     }

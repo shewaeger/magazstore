@@ -25,6 +25,9 @@ public class User {
     String password;
 
     @Column
+    String email;
+
+    @Column
     LocalDateTime dateCreate;
 
     @Column
@@ -48,5 +51,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "id_action")
     )
     Set<Action> actions = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner")
+    Set<Attachment> attachments = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "id_avatar")
+    Attachment avatar;
 
 }
