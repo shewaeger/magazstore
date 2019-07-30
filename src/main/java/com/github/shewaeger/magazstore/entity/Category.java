@@ -23,6 +23,9 @@ public class Category {
     @ManyToOne
     Category parent;
 
+    @OneToMany(mappedBy = "parent")
+    Set<Category> children = new HashSet<>();
+
     @OneToMany(mappedBy = "category")
     Set<Product> products = new HashSet<>();
 }
