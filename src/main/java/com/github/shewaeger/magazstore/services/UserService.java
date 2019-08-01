@@ -23,4 +23,8 @@ public class UserService {
     public void start(ContextRefreshedEvent event) {
         databaseInitializer.initUser();
     }
+
+    public void add() {
+
+    }
 }

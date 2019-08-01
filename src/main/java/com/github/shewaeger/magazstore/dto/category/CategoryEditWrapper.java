@@ -4,7 +4,7 @@ import com.github.shewaeger.magazstore.entity.Category;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class CategoryEditWrapper {
     private Long id;
 
-    @NotNull
+    @NotEmpty(message = "The name cannot be empty.")
     private String name;
 
     private Long idOwner;

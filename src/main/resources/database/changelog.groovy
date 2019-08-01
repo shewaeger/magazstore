@@ -66,6 +66,14 @@ databaseChangeLog() {
             column(name: 'id_owner', type: 'bigint') {
                 constraints(nullable: false, references: 'users(id)', foreignKeyName: 'fk_attachments_owner')
             }
+
+            column(name: 'date_create', type: 'datetime') {
+                constraints nullable: false
+            }
+
+            column(name: 'date_update', type: 'datetime') {
+                constraints nullable: false
+            }
         }
 
         rollback {
@@ -96,6 +104,12 @@ databaseChangeLog() {
             column(name: 'id_parent', type: 'bigint') {
                 constraints(references: 'categories(id)', foreignKeyName: 'fk_categories_tree')
             }
+            column(name: 'date_create', type: 'datetime') {
+                constraints(nullable: false)
+            }
+            column(name: 'date_update', type: 'datetime') {
+                constraints(nullable: false);
+            }
         }
         rollback {
             dropTable(tableName: 'categories')
@@ -114,6 +128,12 @@ databaseChangeLog() {
 
             column(name: 'id_parent', type: 'bigint') {
                 constraints(references: 'categories(id)', foreignKeyName: 'fk_categories_tree')
+            }
+            column(name: 'date_create', type: 'datetime') {
+                constraints(nullable: false)
+            }
+            column(name: 'date_update', type: 'datetime') {
+                constraints nullable: false
             }
         }
 
