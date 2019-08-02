@@ -56,6 +56,7 @@ databaseChangeLog() {
             column(name: 'id', type: 'bigint', autoIncrement: true) {
                 constraints(primaryKey: true, nullable: false)
             }
+            column(name: 'name', type: 'varchar')
 
             column(name: 'mime_type', type: 'varchar')
 

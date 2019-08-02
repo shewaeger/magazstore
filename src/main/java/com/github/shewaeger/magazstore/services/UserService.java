@@ -1,5 +1,6 @@
 package com.github.shewaeger.magazstore.services;
 
+import com.github.shewaeger.magazstore.entity.User;
 import com.github.shewaeger.magazstore.repositories.ActionsRepository;
 import com.github.shewaeger.magazstore.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class UserService {
 
     public void add() {
 
+    }
+
+    public User getCurrentUser() {
+        return userRepository.findFirstByLogin("root");
     }
 }

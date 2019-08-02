@@ -16,6 +16,9 @@ public class Attachment {
     Long id;
 
     @Column
+    String name;
+
+    @Column
     String mimeType;
 
     @Column
