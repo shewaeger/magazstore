@@ -33,7 +33,7 @@ public class AttachmentService {
     public AttachmentWrapper add(MultipartFile file) {
         String hash;
         if (file.getSize() > props.getBans().getLength()) {
-            throw new ServiceException("File size larger than allowed");
+            throw new ServiceException("File size larger than allowed (%s)", props.getBans().getSize());
         }
         byte[] fileBytes;
         try {
