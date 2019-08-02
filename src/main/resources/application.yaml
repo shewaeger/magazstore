@@ -7,3 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+attachments:
+  restricts:
+    size: 20Mb

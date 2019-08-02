@@ -18,7 +18,7 @@ public class ProductEditWrapper {
 
     private Long category;
 
-    private List<Long> attachments = new ArrayList<>();
+    private List<String> attachments = new ArrayList<>();
 
     public void fromWrapperSimple(Product product) {
         product.setName(name)

@@ -49,7 +49,7 @@ public class ProductService {
             product.setCategory(category);
         }
 
-        List<Attachment> attachments = attachmentsRepository.findAllById(wrapper.getAttachments());
+        List<Attachment> attachments = attachmentsRepository.findByHashIn(wrapper.getAttachments());
         product.getAttachments().addAll(attachments);
 
         return new ProductWrapper(repository.save(product));
@@ -69,7 +69,7 @@ public class ProductService {
             product.setCategory(null);
         }
 
-        List<Attachment> attachments = attachmentsRepository.findAllById(wrapper.getAttachments());
+        List<Attachment> attachments = attachmentsRepository.findByHashIn(wrapper.getAttachments());
 
         product.setAttachments(new HashSet<>(attachments));
 

@@ -1,5 +1,6 @@
 package com.github.shewaeger.magazstore.services;
 
+import com.github.shewaeger.magazstore.configurations.properties.AttachmentsProperties;
 import com.github.shewaeger.magazstore.dto.attachment.AttachmentWrapper;
 import com.github.shewaeger.magazstore.entity.Attachment;
 import com.github.shewaeger.magazstore.exceptions.NotFoundException;
@@ -9,26 +10,17 @@ import com.github.shewaeger.magazstore.utils.Asserts;
 import com.google.common.hash.Hashing;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class AttachmentService {
-
-    private File storageDir;
-
-    @Value("${storage.attachments}")
-    private String storage;
+    @Autowired
+    private AttachmentsProperties props;
 
     @Autowired
     private AttachmentsRepository repository;
@@ -36,24 +28,13 @@ public class AttachmentService {
     @Autowired
     private UserService userService;
 
-    @EventListener
-    public void contextRefreshed(ContextRefreshedEvent cre) {
-        Path path = Paths.get(storage);
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-            } catch (IOException e) {
-                throw new ServiceException(e, "Unable to create directory");
-            }
-        }
-
-        storageDir = path.toFile();
-    }
-
     //TODO: проверка типов, ограничения на размер
     @Transactional
     public AttachmentWrapper add(MultipartFile file) {
         String hash;
+        if (file.getSize() > props.getBans().getLength()) {
+            throw new ServiceException("File size larger than allowed");
+        }
         byte[] fileBytes;
         try {
             fileBytes = file.getBytes();
@@ -62,7 +43,7 @@ public class AttachmentService {
         } catch (IOException e) {
             throw new ServiceException(e, "Unable to get file.");
         }
-        File outFile = new File(storageDir, hash);
+        File outFile = new File(props.getStorageDir(), hash);
         if (outFile.exists()) {
             Attachment attachment = repository.findByHash(hash);
             if (attachment != null)
@@ -92,7 +73,7 @@ public class AttachmentService {
 
     @Transactional
     public void get(String hash, HttpServletResponse response) {
-        File file = new File(storageDir, hash);
+        File file = new File(props.getStorageDir(), hash);
         if (!file.exists()) {
             throw new NotFoundException("File %s not found", hash);
         }
