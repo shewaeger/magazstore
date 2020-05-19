@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 
 public class AttachmentsBans {
 
-    @Pattern(regexp = "^\\s*(?<size>\\d+)\\s*(?<factor>(GB|MB|KB)?)$", flags = Pattern.Flag.CASE_INSENSITIVE)
+    @Pattern(regexp = "^\\s*(?<size>\\d+)\\s*(?<factor>(GB|MB|KB)?)?$", flags = Pattern.Flag.CASE_INSENSITIVE)
     private String size;
 
     private Long length = null;
@@ -17,11 +17,7 @@ public class AttachmentsBans {
         return this;
     }
 
-    public String getSize() {
-        return size;
-    }
-
-    public Long getLength() {
+    public Long getUploadLimit() {
         return length;
     }
 }

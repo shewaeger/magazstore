@@ -35,7 +35,7 @@ public class ProductRestController {
         service.delete(id);
     }
 
-    @PostMapping("list")
+    @GetMapping("list")
     public Page<ProductWrapper> list(ProductQuery query) {
         return service.list(query);
     }

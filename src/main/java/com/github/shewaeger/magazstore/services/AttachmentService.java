@@ -28,13 +28,10 @@ public class AttachmentService {
     @Autowired
     private UserService userService;
 
-    //TODO: проверка типов, ограничения на размер
+    //TODO: проверка типов
     @Transactional
     public AttachmentWrapper add(MultipartFile file) {
         String hash;
-        if (file.getSize() > props.getBans().getLength()) {
-            throw new ServiceException("File size larger than allowed (%s)", props.getBans().getSize());
-        }
         byte[] fileBytes;
         try {
             fileBytes = file.getBytes();

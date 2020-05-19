@@ -20,7 +20,7 @@ public class CategoryRestController {
         return categoryService.get(id);
     }
 
-    @PostMapping("list")
+    @GetMapping("list")
     public Page<CategoryWrapper> list(CategoryQuery query) {
         return categoryService.list(query);
     }
