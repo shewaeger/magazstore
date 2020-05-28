@@ -33,7 +33,8 @@
             </v-list>
         </v-navigation-drawer>
         <v-app-bar app dense>
-            <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click="drawer = true" class="hidden-lg-and-up"></v-app-bar-nav-icon>
+            <v-toolbar-title>{{currentName}}</v-toolbar-title>
         </v-app-bar>
         <v-content>
             <router-view></router-view>
@@ -44,7 +45,7 @@
 <script>
     export default {
         data: () => ({
-            drawer: false,
+            drawer: null,
         }),
         computed: {
             items: function () {
@@ -57,6 +58,9 @@
                     }),
                     []);
             },
+            currentName: function() {
+                return this.$route.meta.header;
+            }
         },
         methods: {}
     }
